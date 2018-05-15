@@ -418,132 +418,189 @@ function check_useragent(){
 function breadcrumb() {
 	global $post;
 
+	$html = '';
 	$mark_li = ' itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"';
-	$i = 1;
+	$home_icon = '<i class="glyphicon glyphicon-home"></i> ';
 
-	$strTemp = '';
-	$strTemp .= '<li'.$mark_li.'><i class="glyphicon glyphicon-home"></i> <a href="'.home_url().'" itemprop="item"><span itemprop="name">Icelandic-Memo</span></a><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-	$i++;
+	$array_bc = array();
+	$array_bc[0]['icon']  = ;
+	$array_bc[0]['url']   = home_url();
+	$array_bc[0]['title'] = 'Icelandic-Memo';
 
-	if (is_search()): // 検索結果表示
 
-		$k = wp_specialchars(get_search_query(), 1);
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">”'.$k.'”の検索結果</span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
+	// 検索結果表示
+	if (is_search())
+	{
+		$temp = wp_specialchars(get_search_query(), 1);
+		$array_bc[1]['url']   = '';
+		$array_bc[1]['title'] = $keyword.'の検索結果';
+	}
+	// タクソノミータグアーカイブ
+	elseif (is_tag() || is_tax())
+	{
+		$temp = single_cat_title('', false);
+		$array_bc[1]['url']   = '';
+		$array_bc[1]['title'] = $temp;
+	}
+	// 404 Not Found
+	elseif (is_404())
+	{
+		$array_bc[1]['url']   = '';
+		$array_bc[1]['title'] = '404 Not Found';
+	}
+	// カテゴリーアーカイブ
+	elseif (is_category())
+	{
+		$array_bc[1]['url']   = home_url('blog');
+		$array_bc[1]['title'] = 'ブログ';
 
-	elseif (is_tag() || is_tax()): // タクソノミータグアーカイブ
+		$cat = get_category(get_cat_ID( single_cat_title('', false)));
 
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">'.single_cat_title('', false).'</span><meta itemprop="position" content="'.$i.'" /></li>';
+		// if ($cat->parent)
+		// {
+		// 	// 親カテゴリがある場合
+		// 	$cate_pare = get_category_parents( get_cat_ID( single_cat_title('', false) ), true, SEPA );
 
-	elseif (is_404()): // 404 Not Found
+		// 	// get_category_parentsが自カテゴリも生成しちゃうので除去
+		// 	for ( $i=0; $i<2; $i++; )
+		// 	{
+		// 		$cate_pare = substr($cate_pare, 0, strrpos($cate_pare, SEPA));
+		// 	}
 
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">404 Not Found</span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
+		// 	// 親カテゴリ
+		// 	$array_bc[2]['url']   = '';
+		// 	$array_bc[2]['title'] = $cate_pare;
+		// }
 
-	elseif (is_category()): // カテゴリーアーカイブ
-
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.home_url('blog').'" itemprop="item">ブログ</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-		$i++;
-
-		$cat = get_category( get_cat_ID( single_cat_title('', false) ) );
-
-		if ( $cat->parent ){
-			// 親カテゴリがある場合
-			$cate_pare = get_category_parents( get_cat_ID( single_cat_title('', false) ), true, SEPA );
-
-			// get_category_parentsが自カテゴリも生成しちゃうので除去
-			for ( $i=0; $i<2; $i++ ){
-				$cate_pare = substr( $cate_pare,0,strrpos($cate_pare, SEPA) );
-			}
-			// 親カテゴリ
-			$strTemp .= '<li'.$mark_li.'><span itemprop="name">'.$cate_pare.'</span><meta itemprop="position" content="'.$i.'" /></li>';
-			$i++;
-		}
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">'.single_cat_title('', false).'</span><meta itemprop="position" content="'.$i.'" /></li>';
-
-	elseif (is_page()): // 固定ページ
+		$array_bc[3]['url']   = '';
+		$array_bc[3]['title'] = single_cat_title('', false);
+	}
+	// 固定ページ
+	elseif (is_page())
+	{
 		$id = $post->ID;
 
 		// 親ページがある場合はリンク追加
 		$parent_id = $post->post_parent;
-		if ($parent_id != '') {
-			$link  = get_the_permalink($parent_id);
-			$title = get_the_title($parent_id);
-			$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.$link.'" itemprop="item">'.$title.'</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-			$i++;
+		if ($parent_id != '')
+		{
+			$array_bc[1]['url']   = get_the_permalink($parent_id);
+			$array_bc[1]['title'] = get_the_title($parent_id);
 		}
 
-		$title = get_the_title($id);
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">'.$title.'</span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-
-	elseif (is_single()): // 記事ページ
+		$array_bc[2]['url']   = '';
+		$array_bc[2]['title'] = get_the_title($id);
+	}
+	// 記事ページ
+	elseif (is_single())
+	{
 		$id = $post->ID;
 		$post_type = $post->post_type;
 
-		if ($post_type == 'post') {
-
-			$category = get_the_category();
-			$category_id = $category[0]->term_id; // カテゴリID
+		// 投稿記事
+		if ($post_type == 'post')
+		{
+			$category       = get_the_category();
+			$category_id    = $category[0]->term_id; // カテゴリID
 			$cate_parent_id = $category[0]->parent; // 親カテゴリID
 
 			// 親カテゴリがある場合は表示
-			if ($cate_parent_id != 0) {
+			if ($cate_parent_id != 0)
+			{
 				$p_category = get_the_category($cate_parent_id);
 				$p_category_name = $p_category[0]->name;
 				$p_category_slug = $p_category[0]->slug;
 
-				$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.home_url($p_category_slug).'" itemprop="item">'.$p_category_name.'</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-				$i++;
+				$array_bc[1]['url']   = home_url($p_category_slug);
+				$array_bc[1]['title'] = $p_category_name;
 			}
 
 			// 自身のカテゴリを設定
 			$category_name = $category[0]->name;
 			$category_slug = $category[0]->slug;
-			$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.home_url($category_slug).'" itemprop="item">'.$category_name.'</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-			$i++;
-		} else {
+
+			$array_bc[2]['url']   = home_url($category_slug);
+			$array_bc[2]['title'] = $category_name;
+		}
+		else
+		{
 			// カスタム投稿の場合は各一覧ページを表示
 			$aryTemp = retParentPage($post_type);
-			$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.home_url($aryTemp[1]).'" itemprop="item">'.$aryTemp[0].'</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-			$i++;
 
-			if ($post_type == 'town'
-				|| $post_type == 'spot' ) {
+			$array_bc[1]['url']   = home_url($aryTemp[1]);
+			$array_bc[1]['title'] = $aryTemp[0];
+
+			if ($post_type == 'town' || $post_type == 'spot')
+			{
 				// 街情報、スポット情報の場合はカテゴリを表示
-
 				$taxo_name = '';
-				if ($post_type == 'town') {
+				if ($post_type == 'town')
+				{
 					$taxo_name = 'area';
-				} else {
+				}
+				else
+				{
 					$taxo_name = 'spot-area';
 				}
 
 				// タクソノミー情報を取得し、リンク追加
 				$terms = get_the_terms($id, $taxo_name);
-				foreach ( $terms as $term ) {
+				foreach ($terms as $term)
+				{
 					$tx_slug = $term->slug;
 					$tx_name = $term->name;
 				}
-				if ($tx_slug != '' && $tx_slug != '') {
-					$strTemp .= '<li'.$mark_li.'><span itemprop="name"><a href="'.home_url('area/'.$tx_slug).'" itemprop="item">'.$tx_name.'</a></span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-					$i++;
+
+				if ($tx_slug != '' && $tx_name != '')
+				{
+					$array_bc[2]['url']   = home_url('area/'.$tx_slug);
+					$array_bc[2]['title'] = $tx_name;
 				}
 			}
 		}
 
-		$title = get_the_title($id);
-		$strTemp .= '<li'.$mark_li.'><span itemprop="name">'.$title.'</span><meta itemprop="position" content="'.$i.'" /></li>'."\n";
-
-	else: // 上記以外
-
-	endif;
-
-
-	$ret = '<ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">'."\n";
-	if ($strTemp != '') {
-		$ret .= $strTemp;
+		$array_bc[3]['url']   = '';
+		$array_bc[3]['title'] = get_the_title($id);
 	}
-	$ret .= '</ul>'."\n";
+	// 上記以外
+	else
+	{
 
-	return $ret;
+	}
+
+
+	// パンくずタグ整形
+	$breadcrumb = '';
+	$i = 1;
+
+	foreach ($array_bc as $key => $value)
+	{
+		if ($key == 0)
+		{
+			$breadcrumb .= $home_icon;
+		}
+		if ($value['url'] != '')
+		{
+			$breadcrumb .= '<a href="'.$value['url'].'" itemprop="item"><span itemprop="name">'.$value['title'].'</span></a>';
+		}
+		else
+		{
+			$breadcrumb .= '<span itemprop="name">'.$value['title'].'</span>';
+		}
+
+		$breadcrumb .= '<meta itemprop="position" content="'.$i.'" />';
+		$breadcrumb .= '<li'.$mark_li.'>'.$breadcrumb.'</li>'."\n";
+		$i++;
+	}
+
+	if ($breadcrumb)
+	{
+		$html .= '<ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">'."\n";
+		$html .= $breadcrumb;
+		$html .= '</ul>'."\n";
+	}
+
+	return $html;
 }
 
 // ▼post typeから上層ページを取得
