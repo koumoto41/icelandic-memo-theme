@@ -125,8 +125,9 @@
 				<hr />
 <?php
 				// ブログ記事表示
-				$paged = get_query_var('paged');
-				$blog_posts = get_posts('posts_per_page=8&paged=$paged');
+				// $paged = get_query_var('paged');
+				// $blog_posts = get_posts('posts_per_page=8&paged=$paged');
+				$blog_posts = false;
 
 				if ($blog_posts) {
 ?>
