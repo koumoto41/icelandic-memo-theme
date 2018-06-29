@@ -177,7 +177,7 @@
 	<!-- JS -->
 	<script src="<?= WP_URL ?>/js/jquery.min.js"></script>
 	<script src="<?= WP_URL ?>/js/bootstrap.min.js"></script>
-	<script src="http://maps.google.com/maps/api/js"></script>
+	<script src="http://maps.google.com/maps/api/js?key=AIzaSyA9C3hYPOWNuL-7BTzDvlGTqVEIwXlj8Qw"></script>
 	<!--[if lt IE 9]>
 	<script src="<?= WP_URL ?>/js/html5shiv.js"></script>
 	<![endif]-->
@@ -245,7 +245,7 @@
 		</div>
 	</div>
 	<?php } ?>
-	
+
 	<div class="text-center">
 	<?php set_adsense(); ?>
 	</div>
