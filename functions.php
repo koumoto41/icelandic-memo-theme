@@ -31,7 +31,7 @@ function create_post_type() {
 		'menu_position' =>6,
 		'menu_icon' => 'dashicons-admin-home',
 		'rewrite' => array('with_front' => false),
-		'has_archive' => fasle,
+		'has_archive' => false,
 		)
 	);
 
@@ -45,7 +45,7 @@ function create_post_type() {
 		'menu_position' =>7,
 		'menu_icon' => 'dashicons-format-audio',
 		'rewrite' => array('with_front' => false),
-		'has_archive' => fasle,
+		'has_archive' => false,
 		)
 	);
 
@@ -60,7 +60,7 @@ function create_post_type() {
 		'menu_position' =>8,
 		'menu_icon' => 'dashicons-camera',
 		'rewrite' => array('with_front' => false),
-		'has_archive' => fasle,
+		'has_archive' => false,
 		)
 	);
 }
@@ -423,7 +423,7 @@ function breadcrumb() {
 	$home_icon = '<i class="glyphicon glyphicon-home"></i> ';
 
 	$array_bc = array();
-	$array_bc[0]['icon']  = ;
+	$array_bc[0]['icon']  = '';
 	$array_bc[0]['url']   = home_url();
 	$array_bc[0]['title'] = 'Icelandic-Memo';
 
@@ -572,24 +572,26 @@ function breadcrumb() {
 	// パンくずタグ整形
 	$breadcrumb = '';
 	$i = 1;
-
+	
 	foreach ($array_bc as $key => $value)
 	{
+		$breadcrumb_temp = '';
+
 		if ($key == 0)
 		{
-			$breadcrumb .= $home_icon;
+			$breadcrumb_temp .= $home_icon;
 		}
 		if ($value['url'] != '')
 		{
-			$breadcrumb .= '<a href="'.$value['url'].'" itemprop="item"><span itemprop="name">'.$value['title'].'</span></a>';
+			$breadcrumb_temp .= '<a href="'.$value['url'].'" itemprop="item"><span itemprop="name">'.$value['title'].'</span></a>';
 		}
 		else
 		{
-			$breadcrumb .= '<span itemprop="name">'.$value['title'].'</span>';
+			$breadcrumb_temp .= '<span itemprop="name">'.$value['title'].'</span>';
 		}
 
-		$breadcrumb .= '<meta itemprop="position" content="'.$i.'" />';
-		$breadcrumb .= '<li'.$mark_li.'>'.$breadcrumb.'</li>'."\n";
+		$breadcrumb_temp .= '<meta itemprop="position" content="'.$i.'" />';
+		$breadcrumb .= '<li'.$mark_li.'>'.$breadcrumb_temp.'</li>'."\n";
 		$i++;
 	}
 
