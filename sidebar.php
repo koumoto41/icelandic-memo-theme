@@ -3,7 +3,8 @@
 	$popular_tx  = array();
 	$popular_cat = array();
 
-	$popular['post'] = do_shortcode('[wpp header="Popular Page" header_start="<h4><strong>" header_end="</strong></h4><p>人気のブログ記事</p>" range="monthly" order_by="avg" post_type="post" limit=5 title_length=35 stats_views=0 wpp_start="<ul class="mb30">" wpp_end="</ul>" thumbnail_width=60 thumbnail_height=60]');
+	// $popular['post'] = do_shortcode('[wpp header="Popular Page" header_start="<h4><strong>" header_end="</strong></h4><p>人気のブログ記事</p>" range="monthly" order_by="avg" post_type="post" limit=5 title_length=35 stats_views=0 wpp_start="<ul class="mb30">" wpp_end="</ul>" thumbnail_width=60 thumbnail_height=60]');
+	$popular['post'] = '';
 
 	$popular['page'] = do_shortcode('[wpp header="Popular Page" header_start="<h4><strong>" header_end="</strong></h4><p>よく読まれているページ</p>" range="monthly" order_by="avg" post_type="page" limit=5 title_length=35 stats_views=0 wpp_start="<ul class="mb30">" wpp_end="</ul>" thumbnail_width=60 thumbnail_height=60]');
 
