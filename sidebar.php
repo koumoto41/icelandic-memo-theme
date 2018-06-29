@@ -19,9 +19,12 @@
 
 ?>
 <div class="sidebar">
-	<div class="banner">
-		<iframe frameborder="0" allowtransparency="true" height="200" width="200" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=3285436&pid=883983187" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=3285436&pid=883983187"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3285436&pid=883983187" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3285436&pid=883983187" height="200" width="200" border="0"></a></noscript></iframe>
-	</div>
+<!--	<div class="banner">-->
+<!--		<iframe frameborder="0" allowtransparency="true" height="200" width="200" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=3285436&pid=883983187" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=3285436&pid=883983187"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3285436&pid=883983187" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3285436&pid=883983187" height="200" width="200" border="0"></a></noscript></iframe>-->
+<!--	</div>-->
+<div class="banner text-center">
+	<?php set_adsense('side-top'); ?>
+</div>
 <?php if (is_front_page()): // 検索結果表示 ?>
 	<div class="thum_list">
 		<?= $popular['page'] ?>
@@ -226,16 +229,7 @@ else:
 	echoTagList($popular_cat);
 endif;
 ?>
-	<div class="mt20 mb20">
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-		<!-- iceland-sidebar -->
-		<ins class="adsbygoogle"
-		     style="display:block"
-		     data-ad-client="ca-pub-3392441087689268"
-		     data-ad-slot="4229701635"
-		     data-ad-format="auto"></ins>
-		<script>
-		(adsbygoogle = window.adsbygoogle || []).push({});
-		</script>
+	<div class="mt20 mb20 text-center">
+		<?php set_adsense('side-bottom'); ?>
 	</div>
 </div>

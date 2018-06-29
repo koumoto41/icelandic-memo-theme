@@ -1,15 +1,8 @@
 	<div class="container">
-		<div class="mt20 mb20">
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			<!-- iceland-main -->
-			<ins class="adsbygoogle"
-			     style="display:block"
-			     data-ad-client="ca-pub-3392441087689268"
-			     data-ad-slot="3790879633"
-			     data-ad-format="auto"></ins>
-			<script>
-			(adsbygoogle = window.adsbygoogle || []).push({});
-			</script>
+		<div class="row">
+			<div class="mt20 mb20 text-center">
+				<?php set_adsense('footer'); ?>
+			</div>
 		</div>
 	</div>
 	<div id="anchor">

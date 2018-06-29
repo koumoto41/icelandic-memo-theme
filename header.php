@@ -245,3 +245,7 @@
 		</div>
 	</div>
 	<?php } ?>
+	
+	<div class="text-center">
+	<?php set_adsense(); ?>
+	</div>
