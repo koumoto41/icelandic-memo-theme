@@ -71,6 +71,11 @@
 					</div>
 					<p class="mb20 text-center"><a href="<?= home_url('spot-list') ?>" class="btn btn-primary btn-danger">アイスランドの観光地・名所情報</a></p>
 				</section><!-- section -->
+
+				<div class="text-center">
+                    <?php set_adsense(); ?>
+				</div>
+				
 				<hr />
 				<!-- MUSIC -->
 				<section>
